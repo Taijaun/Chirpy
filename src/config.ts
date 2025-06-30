@@ -5,6 +5,7 @@ process.loadEnvFile()
 type APIConfig = {
     fileserverHits: number;
     db: DBConfig;
+    platform: string;
 };
 
 type DBConfig = {
@@ -33,7 +34,8 @@ const dbConfig: DBConfig = {
 
 export let config: APIConfig = {
     fileserverHits: 0,
-    db: dbConfig
+    db: dbConfig,
+    platform: envOrThrow("PLATFORM")
 }
 
 
