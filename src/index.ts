@@ -46,9 +46,19 @@ app.post("/api/validate_chirp",(req, res, next) => {
     Promise.resolve(handlerValidateChirp(req, res)).catch(next);
 });
 
+app.post("/api/users", async (req, res, next) => {
+    try {
+
+    } catch (err) {
+        next(err);
+    }
+});
+
 app.listen(PORT, () => {
     console.log(`Server is running at http://localhost:${PORT}`);
 });
+
+
 
 app.use(errorHandler)
 
