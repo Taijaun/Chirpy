@@ -10,6 +10,7 @@ import { errorHandler } from "./middleware/errorHandler.js";
 import { migrate } from "drizzle-orm/postgres-js/migrator";
 import { drizzle } from "drizzle-orm/postgres-js";
 import { config } from "./config.js";
+import { handlerNewUser } from "./handlers/newUser.js";
 
 const migrationClient = postgres(config.db.dbString, { max: 1});
 await migrate(drizzle(migrationClient), config.db.migrationConfig);
@@ -36,7 +37,7 @@ app.get("/admin/metrics", (req, res, next) => {
 
 app.post("/admin/reset", async (req, res, next) => {
     try {
-        await handlerReset(req, res);
+        await handlerReset(req, res, next);
     } catch (err) {
         next(err);
     }
@@ -48,7 +49,7 @@ app.post("/api/validate_chirp",(req, res, next) => {
 
 app.post("/api/users", async (req, res, next) => {
     try {
-
+        await handlerNewUser(req, res, next);
     } catch (err) {
         next(err);
     }

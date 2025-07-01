@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from "express";
-import { createUser } from "src/db/queries/users";
-import { NewUser } from "src/db/schema";
-import { BadRequestError } from "src/middleware/errorHandler";
+import { createUser } from "../db/queries/users.js";
+import { NewUser } from "../db/schema.js";
+import { BadRequestError } from "../middleware/errorHandler.js";
 
 export async function handlerNewUser(req: Request, res: Response, next: NextFunction) {
     type emailReq = {

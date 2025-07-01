@@ -15,4 +15,5 @@ export async function createUser(user: NewUser) {
 
 export async function removeAllUsers() {
     const result = await db.delete(users);
+    return result;
 }
