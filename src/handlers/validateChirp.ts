@@ -1,17 +1,20 @@
-import { Request, Response } from "express";
+import { NextFunction, Request, Response } from "express";
 import { BadRequestError } from "../middleware/errorHandler.js";
+import { addChirp } from "../db/queries/chirps.js";
+import { NewChirp } from "../db/schema.js";
 
-export async function handlerValidateChirp(req: Request, res: Response){
+
+export async function handlerValidateChirp(req: Request, res: Response, next: NextFunction){
     type responseError = {
         error: string;
     }
+    console.log("Handler reached!")
 
-    type responseData = {
-        cleanedBody: string;
+    if (!req.body.body || !req.body.userId){
+        throw new BadRequestError("Incorrect request format");
     }
 
     const profaneWords = ["kerfuffle", "sharbert", "fornax"];
-
 
     if (req.body.body.length > 140){
         throw new BadRequestError("Chirp is too long. Max length is 140");
@@ -27,15 +30,23 @@ export async function handlerValidateChirp(req: Request, res: Response){
             bodyJoined.push(word);
         }
     }
-
-    
-
-    const respData: responseData = {
-        cleanedBody: bodyJoined.join(" ")
+    const respData: NewChirp = {
+        body: bodyJoined.join(" "),
+        userId: req.body.userId
     };
 
-            
- 
-    res.status(200).json(respData);
+    const newChirp = await addChirp(respData);
+
+    const insertedChirp: NewChirp = {
+        id: newChirp.id,
+        createdAt: newChirp.createdAt,
+        updatedAt: newChirp.updatedAt,
+        body: newChirp.body,
+        userId: newChirp.userId
+    }
+    console.log("Inserted Chirp:")
+    console.log(insertedChirp);
+
+    res.status(201).json({insertedChirp});
     return;
 }
