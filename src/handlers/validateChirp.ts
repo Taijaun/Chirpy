@@ -8,7 +8,7 @@ export async function handlerValidateChirp(req: Request, res: Response, next: Ne
     type responseError = {
         error: string;
     }
-    console.log("Handler reached!")
+
 
     if (!req.body.body || !req.body.userId){
         throw new BadRequestError("Incorrect request format");
@@ -37,16 +37,6 @@ export async function handlerValidateChirp(req: Request, res: Response, next: Ne
 
     const newChirp = await addChirp(respData);
 
-    const insertedChirp: NewChirp = {
-        id: newChirp.id,
-        createdAt: newChirp.createdAt,
-        updatedAt: newChirp.updatedAt,
-        body: newChirp.body,
-        userId: newChirp.userId
-    }
-    console.log("Inserted Chirp:")
-    console.log(insertedChirp);
-
-    res.status(201).json({insertedChirp});
+    res.status(201).json(newChirp);
     return;
 }
