@@ -15,6 +15,13 @@
       "when": 1751368534100,
       "tag": "0001_high_spot",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1751809961719,
+      "tag": "0002_unknown_thunderbolts",
+      "breakpoints": true
     }
   ]
 }
