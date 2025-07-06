@@ -2,7 +2,7 @@ import { NextFunction, Request, Response } from "express";
 import { createUser } from "../db/queries/users.js";
 import { NewUser } from "../db/schema.js";
 import { BadRequestError } from "../middleware/errorHandler.js";
-import { hashPassword } from "src/auth/auth.js";
+import { hashPassword } from "../auth/auth.js";
 
 export async function handlerNewUser(req: Request, res: Response, next: NextFunction) {
     type emailReq = {

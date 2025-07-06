@@ -12,6 +12,7 @@ import { drizzle } from "drizzle-orm/postgres-js";
 import { config } from "./config.js";
 import { handlerNewUser } from "./handlers/newUser.js";
 import { handlerReturnAllChirps, handlerReturnSingleChirp } from "./handlers/returnAllChirps.js";
+import { handlerLogin } from "./handlers/handlerLogin.js";
 
 const migrationClient = postgres(config.db.dbString, { max: 1});
 await migrate(drizzle(migrationClient), config.db.migrationConfig);
@@ -33,7 +34,7 @@ app.get("/api/healthz", async (req, res, next)=> {
 })
 
 app.get("/admin/metrics", (req, res, next) => {
-    Promise.resolve(handlerHits(req, res)).catch(next);
+    Promise.resolve(handlerHits(req, res, next)).catch(next);
 });
 
 app.post("/admin/reset", async (req, res, next) => {
@@ -69,19 +70,26 @@ app.get("/api/chirps", async (req, res, next) => {
     }
 })
 
-app.get(`/api/chirps/:chirpID`, async (req, res, next) => {
+console.log("About to register /api/login route!")
+app.post("/api/login", async (req, res, next) => {
+    console.log("Attempting to handle /api/login request!")
     try {
-        await handlerReturnSingleChirp(req, res, next);
+        await handlerLogin(req, res, next)
     } catch (err) {
         next(err);
     }
 })
 
+app.get(`/api/chirps/:chirpID`, async (req, res, next) => {
+    try {
+        
+        await handlerReturnSingleChirp(req, res, next);
+    } catch (err) {
+        next(err);
+    }
+})
 app.listen(PORT, () => {
     console.log(`Server is running at http://localhost:${PORT}`);
 });
-
-
-
 app.use(errorHandler)
 
