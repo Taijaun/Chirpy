@@ -1,7 +1,7 @@
-import { Express, Request, Response } from "express";
+import { Express, NextFunction, Request, Response } from "express";
 import { config } from "../config.js"
 
-export async function handlerHits(req: Request, res: Response){
+export async function handlerHits(req: Request, res: Response, next: NextFunction){
     res.set({
         'Content-Type': 'text/html; charset=utf-8'
     })
