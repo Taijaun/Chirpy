@@ -1,5 +1,6 @@
 import {JwtPayload} from 'jsonwebtoken'
 
+
 export function makeJWT(userId: string, expiresIn: number, secret: string): string {
     var jwt = require('jsonwebtoken')
 

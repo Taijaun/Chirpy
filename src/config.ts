@@ -6,6 +6,7 @@ type APIConfig = {
     fileserverHits: number;
     db: DBConfig;
     platform: string;
+    secret: string;
 };
 
 type DBConfig = {
@@ -35,7 +36,8 @@ const dbConfig: DBConfig = {
 export let config: APIConfig = {
     fileserverHits: 0,
     db: dbConfig,
-    platform: envOrThrow("PLATFORM")
+    platform: envOrThrow("PLATFORM"),
+    secret: envOrThrow("JWT_SECRET")
 }
 
 
