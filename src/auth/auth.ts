@@ -1,4 +1,5 @@
 import bcrypt from 'bcrypt';
+import { Request } from 'express';
 
 export async function hashPassword(password: string): Promise<string>{
     const saltRounds = 10;
@@ -20,4 +21,23 @@ export async function checkPasswordHash(password: string, hash: string): Promise
     } else {
         return false;
     }
+}
+
+export function getBearerToken(req: Request): string {
+    const authInfo = req.get('Authorization');
+
+    if (authInfo){
+        const tokenStringSplit = authInfo.split(' ');
+
+        if (tokenStringSplit.length === 2 && tokenStringSplit[0] === "Bearer"){
+            const tokenString = tokenStringSplit[1];
+            return tokenString;
+        } else {
+            throw new Error("Invalid token")
+        }
+    } else {
+        throw new Error("Authorization header does not exist");
+    }
+    
+
 }
