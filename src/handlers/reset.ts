@@ -9,9 +9,7 @@ export async function handlerReset(req: Request, res: Response, next: NextFuncti
     if (config.platform !== "dev"){
         throw new ForbiddenError("Only developers can access this")
     } else {
-        console.log("about to delete users");
         await removeAllUsers();
-        console.log("deleted users");
         res.status(200).json({ message: "users deleted" });
     }
     
