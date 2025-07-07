@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response } from "express";
-import { BadRequestError } from "../middleware/errorHandler.js";
+import { BadRequestError, UnauthorizedError } from "../middleware/errorHandler.js";
 import { addChirp } from "../db/queries/chirps.js";
 import { NewChirp } from "../db/schema.js";
 import { getBearerToken } from "../auth/auth.js";
@@ -8,16 +8,20 @@ import { config } from "../config.js";
 
 
 export async function handlerValidateChirp(req: Request, res: Response, next: NextFunction){
-    type responseError = {
-        error: string;
+
+    let bearerToken: string;
+    let validToken: string;
+
+    try {
+        bearerToken = getBearerToken(req);
+
+        validToken = validateJWT(bearerToken, config.secret);
+    } catch (error) {
+        throw new UnauthorizedError("Invalid authentication");
     }
 
-    const bearerToken = getBearerToken(req);
-    const validToken = validateJWT(bearerToken, config.secret);
-
-
-    if (!validToken){
-        throw new BadRequestError("Incorrect request format");
+    if (!req.body.body){
+        throw new BadRequestError("Invalid request parameters");
     }
 
     const profaneWords = ["kerfuffle", "sharbert", "fornax"];
@@ -36,6 +40,7 @@ export async function handlerValidateChirp(req: Request, res: Response, next: Ne
             bodyJoined.push(word);
         }
     }
+
     const respData: NewChirp = {
         body: bodyJoined.join(" "),
         userId: validToken

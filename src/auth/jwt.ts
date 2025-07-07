@@ -1,8 +1,8 @@
 import {JwtPayload} from 'jsonwebtoken'
+import jwt from 'jsonwebtoken';
 
 
 export function makeJWT(userId: string, expiresIn: number, secret: string): string {
-    var jwt = require('jsonwebtoken')
 
     type payload = Pick<JwtPayload, "iss" | "sub" | "iat" | "exp">;
 
@@ -22,11 +22,10 @@ export function makeJWT(userId: string, expiresIn: number, secret: string): stri
 }
 
 export function validateJWT(tokenString: string, secret: string): string {
-    var jwt = require('jsonwebtoken')
 
     try {
         const token = jwt.verify(tokenString, secret)
-        return token.sub;
+        return token.sub as string;
     } catch (err){
         throw new Error("Invalid token"); 
     }

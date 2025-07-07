@@ -70,9 +70,7 @@ app.get("/api/chirps", async (req, res, next) => {
     }
 })
 
-console.log("About to register /api/login route!")
 app.post("/api/login", async (req, res, next) => {
-    console.log("Attempting to handle /api/login request!")
     try {
         await handlerLogin(req, res, next)
     } catch (err) {
