@@ -2,6 +2,9 @@ import { NextFunction, Request, Response } from "express";
 import { BadRequestError } from "../middleware/errorHandler.js";
 import { addChirp } from "../db/queries/chirps.js";
 import { NewChirp } from "../db/schema.js";
+import { getBearerToken } from "../auth/auth.js";
+import { validateJWT } from "../auth/jwt.js";
+import { config } from "../config.js";
 
 
 export async function handlerValidateChirp(req: Request, res: Response, next: NextFunction){
@@ -9,8 +12,11 @@ export async function handlerValidateChirp(req: Request, res: Response, next: Ne
         error: string;
     }
 
+    const bearerToken = getBearerToken(req);
+    const validToken = validateJWT(bearerToken, config.secret);
 
-    if (!req.body.body || !req.body.userId){
+
+    if (!validToken){
         throw new BadRequestError("Incorrect request format");
     }
 
@@ -32,7 +38,7 @@ export async function handlerValidateChirp(req: Request, res: Response, next: Ne
     }
     const respData: NewChirp = {
         body: bodyJoined.join(" "),
-        userId: req.body.userId
+        userId: validToken
     };
 
     const newChirp = await addChirp(respData);
