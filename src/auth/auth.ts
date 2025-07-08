@@ -1,6 +1,7 @@
 import bcrypt from 'bcrypt';
 import { Request } from 'express';
 import { randomBytes } from 'node:crypto';
+import { UnauthorizedError } from '../middleware/errorHandler';
 
 export async function hashPassword(password: string): Promise<string>{
     const saltRounds = 10;
@@ -34,10 +35,10 @@ export function getBearerToken(req: Request): string {
             const tokenString = tokenStringSplit[1];
             return tokenString;
         } else {
-            throw new Error("Invalid token")
+            throw new UnauthorizedError("Invalid token")
         }
     } else {
-        throw new Error("Authorization header does not exist");
+        throw new UnauthorizedError("Authorization header does not exist");
     }
     
 
