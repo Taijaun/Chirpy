@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from "express";
-import { getBearerToken } from "src/auth/auth";
-import { revokeToken } from "src/db/queries/tokens";
+import { getBearerToken } from "../auth/auth.js";
+import { revokeToken } from "../db/queries/tokens.js";
 
 export async function handlerRevoke(req: Request, res: Response, next: NextFunction){
 

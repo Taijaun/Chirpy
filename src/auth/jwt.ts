@@ -2,7 +2,7 @@ import {JwtPayload} from 'jsonwebtoken'
 import jwt from 'jsonwebtoken';
 
 
-export function makeJWT(userId: string, expiresIn: number, secret: string): string {
+export function makeJWT(userId: string, secret: string, expiresIn: number = 3600 ): string {
 
     type payload = Pick<JwtPayload, "iss" | "sub" | "iat" | "exp">;
 

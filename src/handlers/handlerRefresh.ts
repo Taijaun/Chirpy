@@ -1,9 +1,9 @@
 import { NextFunction, Request, Response } from "express";
-import { getBearerToken } from "../auth/auth";
-import { lookupTokenInDb } from "../db/queries/tokens";
-import { UnauthorizedError } from "../middleware/errorHandler";
-import { makeJWT } from "../auth/jwt";
-import { config } from "../config";
+import { getBearerToken } from "../auth/auth.js";
+import { lookupTokenInDb } from "../db/queries/tokens.js";
+import { UnauthorizedError } from "../middleware/errorHandler.js";
+import { makeJWT } from "../auth/jwt.js";
+import { config } from "../config.js";
 
 
 export async function handlerRefresh(req: Request, res: Response, next: NextFunction){

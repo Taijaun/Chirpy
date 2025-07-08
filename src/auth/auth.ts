@@ -1,7 +1,7 @@
 import bcrypt from 'bcrypt';
 import { Request } from 'express';
 import { randomBytes } from 'node:crypto';
-import { UnauthorizedError } from '../middleware/errorHandler';
+import { UnauthorizedError } from '../middleware/errorHandler.js';
 
 export async function hashPassword(password: string): Promise<string>{
     const saltRounds = 10;
