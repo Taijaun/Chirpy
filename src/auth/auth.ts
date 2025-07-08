@@ -1,5 +1,6 @@
 import bcrypt from 'bcrypt';
 import { Request } from 'express';
+import { randomBytes } from 'node:crypto';
 
 export async function hashPassword(password: string): Promise<string>{
     const saltRounds = 10;
@@ -40,4 +41,11 @@ export function getBearerToken(req: Request): string {
     }
     
 
+}
+
+export function makeRefreshToken(): string {
+
+    const token = randomBytes(32).toString('hex');
+
+    return token;
 }
