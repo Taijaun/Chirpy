@@ -13,6 +13,8 @@ import { config } from "./config.js";
 import { handlerNewUser } from "./handlers/newUser.js";
 import { handlerReturnAllChirps, handlerReturnSingleChirp } from "./handlers/returnAllChirps.js";
 import { handlerLogin } from "./handlers/handlerLogin.js";
+import { handlerRefresh } from "./handlers/handlerRefresh.js";
+import { handlerRevoke } from "./handlers/handlerRevoke.js";
 
 const migrationClient = postgres(config.db.dbString, { max: 1});
 await migrate(drizzle(migrationClient), config.db.migrationConfig);
@@ -86,6 +88,23 @@ app.get(`/api/chirps/:chirpID`, async (req, res, next) => {
         next(err);
     }
 })
+
+app.post("/api/refresh", async (req, res, next) => {
+    try {
+        await handlerRefresh(req, res, next);
+    } catch (err) {
+        next(err);
+    }
+})
+
+app.post("/api/revoke", async (req, res, next) => {
+    try {
+        await handlerRevoke(req, res, next);
+    } catch (err) {
+        next(err);
+    }
+})
+
 app.listen(PORT, () => {
     console.log(`Server is running at http://localhost:${PORT}`);
 });

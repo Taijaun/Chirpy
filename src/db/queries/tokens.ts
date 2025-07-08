@@ -13,3 +13,11 @@ export async function lookupTokenInDb(token: string){
 
     return result;
 }
+
+export async function revokeToken(token: string){
+    const result = await db.update(refreshTokens)
+        .set({revokedAt: new Date(Date.now())})
+        .where(eq(refreshTokens.token, token));
+
+    return result;
+}
