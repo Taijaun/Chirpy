@@ -10,17 +10,13 @@ import { config } from "../config.js";
 
 export async function updateUserDetails(req: Request, res: Response, next: NextFunction){
     const userToken = getBearerToken(req);
-    const tokenValid = validateJWT(userToken, config.secret);
-    const allUserIds = await selectAllUserId();
-    console.log(`Db user IDs:`, allUserIds.map(u => u.userId));
-
-    const userId = await getUserIDByToken(tokenValid);
+    const userId = validateJWT(userToken, config.secret);
 
     if (!userId){
         throw new UnauthorizedError("User ID does not exist");
     }
 
-    const user = await selectUserById(userId.userId);
+    const user = await selectUserById(userId);
 
     if (!user){
         throw new UnauthorizedError("User does not exist");
@@ -38,7 +34,7 @@ export async function updateUserDetails(req: Request, res: Response, next: NextF
         throw new BadRequestError("Invalid request parameters")
     }
 
-    const updatedUser = await selectUserById(userId.userId);
+    const updatedUser = await selectUserById(userId);
 
     type UpdatedUserInfo = Omit<NewUser, "hashedPassword">
 
