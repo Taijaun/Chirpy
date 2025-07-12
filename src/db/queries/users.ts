@@ -36,6 +36,14 @@ export async function selectUserById(id: string){
     return result;
 }
 
+export async function selectAllUserId(){
+    const results = await db
+        .select({userId: users.id})
+        .from(users)
+
+    return results;
+}
+
 export async function updateUserEmail(user: NewUser, email: string) {
     if (!(typeof(user.id) === "string")){
         throw new Error("Invalid user")

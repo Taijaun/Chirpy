@@ -10,6 +10,7 @@ export async function addRefreshToken(token: RefreshToken){
 
 export async function lookupTokenInDb(token: string){
     const result = await db.select().from(refreshTokens).where(eq(refreshTokens.token, token));
+    console.log(result);
 
     return result;
 }

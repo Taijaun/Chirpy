@@ -1,5 +1,6 @@
 import {JwtPayload} from 'jsonwebtoken'
 import jwt from 'jsonwebtoken';
+import { UnauthorizedError } from '../middleware/errorHandler.js';
 
 
 export function makeJWT(userId: string, secret: string, expiresIn: number = 3600 ): string {
@@ -27,6 +28,6 @@ export function validateJWT(tokenString: string, secret: string): string {
         const token = jwt.verify(tokenString, secret)
         return token.sub as string;
     } catch (err){
-        throw new Error("Invalid token"); 
+        throw new UnauthorizedError("Invalid token"); 
     }
 }

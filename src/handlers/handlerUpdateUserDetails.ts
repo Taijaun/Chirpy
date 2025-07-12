@@ -1,20 +1,20 @@
 import { NextFunction, Request, Response } from "express";
-import { getBearerToken, hashPassword } from "../auth/auth";
-import { getUserIDByToken, lookupTokenInDb } from "../db/queries/tokens";
-import { BadRequestError, UnauthorizedError } from "../middleware/errorHandler";
-import { selectUserById, updateUserEmail, updateUserPassword } from "../db/queries/users";
-import { NewUser } from "../db/schema";
+import { getBearerToken, hashPassword } from "../auth/auth.js";
+import { getUserIDByToken, lookupTokenInDb } from "../db/queries/tokens.js";
+import { BadRequestError, UnauthorizedError } from "../middleware/errorHandler.js";
+import { selectAllUserId, selectUserById, updateUserEmail, updateUserPassword } from "../db/queries/users.js";
+import { NewUser } from "../db/schema.js";
+import { validateJWT } from "../auth/jwt.js";
+import { config } from "../config.js";
 
 
 export async function updateUserDetails(req: Request, res: Response, next: NextFunction){
     const userToken = getBearerToken(req);
-    const tokenValid = await lookupTokenInDb(userToken);
+    const tokenValid = validateJWT(userToken, config.secret);
+    const allUserIds = await selectAllUserId();
+    console.log(`Db user IDs:`, allUserIds.map(u => u.userId));
 
-    if (tokenValid.length < 1){
-        throw new UnauthorizedError("Token invalid");
-    }
-
-    const userId = await getUserIDByToken(tokenValid[0].userId);
+    const userId = await getUserIDByToken(tokenValid);
 
     if (!userId){
         throw new UnauthorizedError("User ID does not exist");
