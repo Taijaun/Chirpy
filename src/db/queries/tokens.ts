@@ -21,3 +21,12 @@ export async function revokeToken(token: string){
 
     return result;
 }
+
+export async function getUserIDByToken(token: string){
+    const [result] = await db
+        .select({userId: refreshTokens.userId})
+        .from(refreshTokens)
+        .where(eq(refreshTokens.token, token))
+        
+    return result;
+}
