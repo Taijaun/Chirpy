@@ -42,7 +42,8 @@ export async function updateUserDetails(req: Request, res: Response, next: NextF
         id: updatedUser.id,
         createdAt: updatedUser.createdAt,
         updatedAt: updatedUser.updatedAt,
-        email: updatedUser.email
+        email: updatedUser.email,
+        isChirpyRed: updatedUser.isChirpyRed
     };
 
     res.status(200).json(userResponse);

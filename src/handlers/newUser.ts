@@ -24,6 +24,7 @@ export async function handlerNewUser(req: Request, res: Response, next: NextFunc
                 createdAt: createdUser.createdAt,
                 updatedAt: createdUser.updatedAt,
                 email: createdUser.email,
+                isChirpyRed: createdUser.isChirpyRed
             }
 
             res.status(201).json(userInfo);

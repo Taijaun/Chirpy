@@ -71,3 +71,13 @@ export async function updateUserPassword(user: NewUser, password: string){
 
     return result;
 }
+
+export async function upgradeToChirpyRed(userId: string){
+    const [result] = await db
+        .update(users)
+        .set({isChirpyRed: true})
+        .where(eq(users.id, userId))
+        .returning()
+
+    return result;
+}
