@@ -18,6 +18,7 @@ import { handlerRevoke } from "./handlers/handlerRevoke.js";
 import { updateUserDetails } from "./handlers/handlerUpdateUserDetails.js";
 import { deleteChirpById } from "./handlers/handlerDeleteChirpById.js";
 import { upgradeToChirpyRed } from "./db/queries/users.js";
+import { polkaWebhooksUpgrade } from "./handlers/handlerPolkaWebhooksUpgrade.js";
 
 const migrationClient = postgres(config.db.dbString, { max: 1});
 await migrate(drizzle(migrationClient), config.db.migrationConfig);
@@ -126,7 +127,7 @@ app.put("/api/users", async (req, res, next) => {
 
 app.post("/api/polka/webhooks", async (req, res, next) => {
     try {
-        
+        await polkaWebhooksUpgrade(req, res, next);
     } catch (err) {
         next(err)
     }
