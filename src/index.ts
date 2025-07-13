@@ -16,6 +16,7 @@ import { handlerLogin } from "./handlers/handlerLogin.js";
 import { handlerRefresh } from "./handlers/handlerRefresh.js";
 import { handlerRevoke } from "./handlers/handlerRevoke.js";
 import { updateUserDetails } from "./handlers/handlerUpdateUserDetails.js";
+import { deleteChirpById } from "./handlers/handlerDeleteChirpById.js";
 
 const migrationClient = postgres(config.db.dbString, { max: 1});
 await migrate(drizzle(migrationClient), config.db.migrationConfig);
@@ -90,6 +91,14 @@ app.get(`/api/chirps/:chirpID`, async (req, res, next) => {
     }
 })
 
+app.delete(`/api/chirps/:chirpID`, async (req, res, next) => {
+    try {
+        await deleteChirpById(req, res, next);
+    } catch (err) {
+        next(err);
+    }
+})
+
 app.post("/api/refresh", async (req, res, next) => {
     try {
         await handlerRefresh(req, res, next);
@@ -113,6 +122,7 @@ app.put("/api/users", async (req, res, next) => {
         next(err);
     }
 })
+
 
 app.listen(PORT, () => {
     console.log(`Server is running at http://localhost:${PORT}`);
