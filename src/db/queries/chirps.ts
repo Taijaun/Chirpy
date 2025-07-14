@@ -1,4 +1,4 @@
-import { asc, eq } from "drizzle-orm";
+import { asc, desc, eq } from "drizzle-orm";
 import { db } from "../index.js";
 import { chirps, NewChirp } from "../schema.js";
 
@@ -9,13 +9,24 @@ export async function addChirp(chirp: NewChirp){
     return result;
 }
 
-export async function getAllChirps(){
-    const result = await db
-        .select()
-        .from(chirps)
-        .orderBy(asc(chirps.createdAt));
+export async function getAllChirps(ascending: boolean = true){
+    let result;
+    if (ascending === true){
+        result = await db
+            .select()
+            .from(chirps)
+            .orderBy(asc(chirps.createdAt));
 
-    return result;
+        return result;
+    } else {
+        result = await db
+            .select()
+            .from(chirps)
+            .orderBy(desc(chirps.createdAt));
+
+        return result;
+    }
+    
 }
 
 export async function getSingleChirp(id: string){
@@ -36,11 +47,23 @@ export async function deleteChirp(id: string){
     return result;
 }
 
-export async function getUsersChirps(id: string){
-    const result = await db
-        .select()
-        .from(chirps)
-        .where(eq(chirps.userId, id));
+export async function getUsersChirps(id: string, ascending: boolean = true){
+    let result;
 
-    return result;
+    if (ascending === true){
+        result = await db
+            .select()
+            .from(chirps)
+            .where(eq(chirps.userId, id))
+            .orderBy(asc(chirps.createdAt));
+
+        return result;
+    } else {
+        result = await db
+            .select()
+            .from(chirps)
+            .where(eq(chirps.userId, id))
+            .orderBy(desc(chirps.createdAt));
+        return result;
+    }
 }
