@@ -28,7 +28,7 @@ A simple Twitter-like backend service built with Node.js and Express, where user
 
 ## 📂 Project Structure<br>
 
-Chirpy/
+Chirpy/<br>
 ├── handlers/<br>
 ├── middleware/<br>
 ├── db/<br>
